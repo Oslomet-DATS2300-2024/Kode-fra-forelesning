@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class Sortering_08_23 {
     public static void main(String[] args) {
-        int[] tabell = {1, 3, 2, 7, 5, 0, 4, 4, 2, -3};
+        int[] tabell = EkstraFunksjoner.randPerm(1000);
         int maks = maksIndeks(tabell);
         System.out.println(maks);
         System.out.println(tabell[maks]);

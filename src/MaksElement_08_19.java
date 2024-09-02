@@ -3,8 +3,8 @@ public class MaksElement_08_19 {
         int[] tabell = {1, 3, 2, 7, 5, 0, 4, 4, 2, -3};
         int maksVerdi = maks(tabell);
         System.out.println(maksVerdi);
-        //int[] tabell2 = {};
-        //System.out.println(maks(tabell2));
+        // int[] tabell2 = {}; // vil gi kryptisk feilmelding
+        // System.out.println(maks(tabell2));
     }
 
     public static int maks(int[] tabell) {
