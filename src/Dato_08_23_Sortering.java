@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class Sortering_08_23 {
+public class Dato_08_23_Sortering {
     public static void main(String[] args) {
         int[] tabell = EkstraFunksjoner.randPerm(1000);
         int maks = maksIndeks(tabell);

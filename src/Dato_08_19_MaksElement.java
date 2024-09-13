@@ -1,4 +1,4 @@
-public class MaksElement_08_19 {
+public class Dato_08_19_MaksElement {
     public static void main(String[] args) {
         int[] tabell = {1, 3, 2, 7, 5, 0, 4, 4, 2, -3};
         int maksVerdi = maks(tabell);

@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class Sortering_09_02 {
+public class Dato_09_02_Sortering {
     public static void main(String[] args) {
         // int[] tabell = {2, 1, 3, 4, 7, 5, 4, 1};
         int[] tabell = EkstraFunksjoner.randPerm(100000000);

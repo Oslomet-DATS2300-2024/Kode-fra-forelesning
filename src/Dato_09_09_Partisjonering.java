@@ -26,7 +26,7 @@ class ErA implements Test {
     }
 }
 
-public class Partisjonering_09_09 {
+public class Dato_09_09_Partisjonering {
     public static void main(String[] args) {
         char[] bokstaver = {'A', 'c', 'D', 'e', 'H', 'i', 'k', 'O', 'i', 'r', 'u', 'z'};
         //char[] bokstaver = {'s', 't', 'q', 'R', 'k', 'V'};
@@ -36,7 +36,7 @@ public class Partisjonering_09_09 {
         char[] sorterAerFørst = {'a', 'A', 'e', 'k', 'a', 'V', 'A', 'j'};
         partisjoner(sorterAerFørst, c -> (c == 'a' || c == 'A'));
         System.out.println(Arrays.toString(sorterAerFørst));
-        partisjoner(bokstaver, Partisjonering_09_09::erVokal);
+        partisjoner(bokstaver, Dato_09_09_Partisjonering::erVokal);
         System.out.println(Arrays.toString(bokstaver));
     }
 
