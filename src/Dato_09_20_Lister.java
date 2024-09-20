@@ -101,12 +101,17 @@ class LenketListe<T> implements Liste<T> {
     public boolean tom() {return (antall == 0);}
 
     public boolean leggInn(T t) {
+        // Legger inn i _starten_ av lista.
         hode = new Node(t, hode);
         antall++;
         return true;
     }
 
     public boolean leggInn(int indeks, T t) {
+        // Ikke ferdig!
+        // Hva med tom liste?
+        // Hva med liste med ett element?
+        // Hva om indeks = antall?
         if (indeks < 0 || indeks > antall)
             throw new IndexOutOfBoundsException("Du er utafor lista.");
         Node n = hode;
@@ -115,6 +120,8 @@ class LenketListe<T> implements Liste<T> {
             f = n; n = n.neste;
         }
         f.neste = new Node(t, n);
+        // Kunne droppa n, siden n = f.neste.
+        // f.neste = new Node(t, f.neste)
         return true;
     }
 
