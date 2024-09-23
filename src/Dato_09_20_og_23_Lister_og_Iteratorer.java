@@ -1,6 +1,8 @@
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.Objects;
 
-interface Beholder<T> {
+interface Beholder<T> extends Iterable<T> {
     boolean leggInn(T t);
     boolean inneholder(T t);
     boolean fjern(T t);
@@ -72,6 +74,25 @@ class TabellListe<T> implements Liste<T> {
     public boolean fjern(T t) {throw new UnsupportedOperationException();}
     public boolean fjern(int i) {throw new UnsupportedOperationException();}
     public boolean inneholder(T t) {throw new UnsupportedOperationException();}
+
+    public Iterator<T> iterator() {
+        return new TabellListeIterator();
+    }
+
+    private class TabellListeIterator implements Iterator<T> {
+        int i;
+        public TabellListeIterator() {
+            i = 0;
+        }
+
+        public boolean hasNext() {
+            return i < antall;
+        }
+
+        public T next() {
+            return tabellListe[i++];
+        }
+    }
 }
 
 class LenketListe<T> implements Liste<T> {
@@ -91,9 +112,11 @@ class LenketListe<T> implements Liste<T> {
 
     Node hode;
     int antall;
+    int endringer;
 
     public LenketListe() {
         antall = 0;
+        endringer = 0;
         hode = null;
     }
 
@@ -103,7 +126,7 @@ class LenketListe<T> implements Liste<T> {
     public boolean leggInn(T t) {
         // Legger inn i _starten_ av lista.
         hode = new Node(t, hode);
-        antall++;
+        antall++; endringer++;
         return true;
     }
 
@@ -122,6 +145,7 @@ class LenketListe<T> implements Liste<T> {
         f.neste = new Node(t, n);
         // Kunne droppa n, siden n = f.neste.
         // f.neste = new Node(t, f.neste)
+        antall++; endringer++;
         return true;
     }
 
@@ -137,18 +161,79 @@ class LenketListe<T> implements Liste<T> {
 
     public T oppdater(int i, T t) {throw new UnsupportedOperationException();}
     public boolean fjern(int i) {throw new UnsupportedOperationException();}
-    public boolean fjern(T t) {throw new UnsupportedOperationException();}
+    public boolean fjern(T t) {
+        // Gir feilmelding om vi prøver fjerne hode
+        Node n = hode;
+        Node f = null;
+        while (n != null) {
+            if (n.verdi == t) {
+                f.neste = n.neste;
+                n.neste = null;
+                antall--; endringer++;
+                return true;
+            }
+            f = n;
+            n = n.neste;
+        }
+        return false;
+    }
     public boolean inneholder(T t) {throw new UnsupportedOperationException();}
 
+    public Iterator<T> iterator() {
+        return new LenketListeIterator();
+    }
+
+    private class LenketListeIterator implements Iterator<T> {
+        Node denne = hode;
+        int startEndringer;
+
+        public LenketListeIterator() {
+            startEndringer = endringer;
+        }
+        public boolean hasNext() {
+            return denne != null;
+        }
+        public T next() {
+            if (startEndringer != endringer) throw new ConcurrentModificationException();
+            T verdi = denne.verdi;
+            denne = denne.neste;
+            return verdi;
+        }
+    }
 }
 
-public class Dato_09_20_Lister {
+class AllePositiveHeltall implements Iterable<Integer> {
+    public Iterator<Integer> iterator() {
+        return new AllePositiveHeltallIterator();
+    }
+
+    private class AllePositiveHeltallIterator implements Iterator<Integer> {
+        int i = 1;
+        public boolean hasNext() {
+            return true;
+        }
+        public Integer next() {
+            return i++;
+        }
+    }
+}
+
+public class Dato_09_20_og_23_Lister_og_Iteratorer {
     public static void testTabellListe() {
         TabellListe<Integer> tblist = new TabellListe<>(4);
         int[] tabell = {3, 7, 5, 2, 4, 3, 10, 8, 19};
         for (int i: tabell) tblist.leggInn(i);
         tblist.oppdater(5, 13);
-        System.out.println(tblist.toString());
+        for (Integer i : tblist) {
+            System.out.println(i);
+        }
+        // Dette er ekvivalent med:
+        Iterator<Integer> it = tblist.iterator();
+        while (it.hasNext()) {
+            Integer i = it.next();
+
+            System.out.println(i);
+        }
     }
 
     public static void testLenketListe() {
@@ -159,10 +244,37 @@ public class Dato_09_20_Lister {
         for (int i = 0; i < 9; i++) {
             System.out.println(llist.hent(i));
         }
+        // Nå, bedre utgave:
+        for(Integer i : llist) {
+            System.out.println(i);
+        }
+    }
+
+    public static void testLenketListeSletting() {
+        LenketListe<String> llstring = new LenketListe<>();
+        String[] stabell = {"Hei", "Hallo", "Hvordan går det?", "Dårlig", "Bra", "Ok"};
+        for (String s : stabell) llstring.leggInn(s);
+        for (String s : llstring) {
+            if (s.equals("Bra")) {
+                llstring.fjern("Dårlig");
+            }
+            System.out.println(s);
+        }
+        for (String s : llstring) {
+            System.out.println(s);
+        }
     }
 
     public static void main(String[] args) {
         //testTabellListe();
-        testLenketListe();
+        //testLenketListe();
+        testLenketListeSletting();
+
+        // Ikke kjør dette:
+        /*
+        for (Integer i : new AllePositiveHeltall()) {
+            System.out.println(i);
+        }
+        */
     }
 }
