@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Objects;
@@ -25,6 +26,10 @@ class TabellListe<T> implements Liste<T> {
     public TabellListe(int størrelse) {
         int antall = 0;
         tabellListe = (T[]) new Object[størrelse];
+    }
+
+    public String toString() {
+        return Arrays.toString(Arrays.copyOf(tabellListe, antall));
     }
 
     public TabellListe() {
